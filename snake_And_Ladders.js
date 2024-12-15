@@ -36,34 +36,55 @@ function isSnake(playerPostion) {
   return playerPostion === getSnakeEndPostion(playerPostion);
 }
 
-function playerPostion(playerPostion, playerSymbol) {
-  console.log(playerSymbol + "press ENTER play ");
+function ladderMessage(ladderEnd) {
+  console.log("🪜" + 'you hit ladder ☺️ now you are at ' + ladderEnd + "\n");
+}
+
+function snakeMesage(snakeEnd) {
+  console.log("🐍 you were caught with snake 😆 now you are at " + snakeEnd + "\n");
+}
+
+function displayPostion(postion) {
+  console.log("  now you are at " + postion + "\n");
+}
+
+function displayDiceValue(symbol, input) {
+  console.log("▶️ " + symbol + " Rolled dice 🎲  got : " + input);
+}
+
+function dislayNeedMessage(playerPostion, need) {
+  console.log("  now you are at " + playerPostion + "\n");
+  console.log(" YOU NEED " + need + "\n");
+}
+
+function displayEnterMessage(symbol) {
+  console.log(symbol + "press ENTER play ");
+}
+
+function getPlayerPostion(playerPostion, playerSymbol) {
+  displayEnterMessage(playerSymbol);
 
   const input = rollDice();
   playerPostion += input;
 
-
-  console.log("▶️ " + playerSymbol + " Rolled dice 🎲  got : " + input);
+  displayDiceValue(playerSymbol, +input);
 
   if (playerPostion > 100) {
-    console.log("  now you are at " + (playerPostion - input) + "\n");
     const need = 100 - (playerPostion - input)
-    console.log(" YOU NEED " + need + "\n");
+    dislayNeedMessage(playerPostion - input, need);
 
     return playerPostion - input;
   }
 
-  console.log("  now you are at " + playerPostion + "\n");
+  displayPostion(playerPostion);
 
   if (!isLadder(playerPostion)) {
-    console.log("🪜" + 'you hit ladder ☺️ now you are at ' + getLadderEndPostion(playerPostion) + "\n");
-
+    ladderMessage(getLadderEndPostion(playerPostion));
     return getLadderEndPostion(playerPostion);
   }
 
   if (!isSnake(playerPostion)) {
-    console.log("🐍 you were caught with snake 😆 now you are at " + getSnakeEndPostion(playerPostion) + "\n");
-
+    snakeMesage(getSnakeEndPostion(playerPostion));
     return getSnakeEndPostion(playerPostion);
   }
 
@@ -71,32 +92,45 @@ function playerPostion(playerPostion, playerSymbol) {
 }
 
 function help() {
-  console.log(" ---------------------------------------------------- ");
+  repeat(50);
   console.log("|🐍🐍 Be Careful with snake postions 37 48 75 91 75  |");
   console.log("|🪜🪜 Ladder Postions 4 12 14 22 41 54               |");
-  console.log(" ----------------------------------------------------  ")
+  repeat(50);
 
   choice();
 }
 
+function displayPlayersPostion(player1Name, player2Name, player1, player2) {
+  console.log(player1Name + " postion : " + player1 + "\t\t\t\t" + player2Name + " postion : " + player2 + "\n");
+}
+
+function winMessage(playerName) {
+  return " 🥳🤩 " + playerName + " YOU WON🏅🏆☺️";
+}
+
+function repeat(noOfTimes) {
+  return console.log('-'.repeat(noOfTimes));
+}
+
+
 function forRollingDice(player1, player2, player1Name, player2Name, player1Symbol, player2Symbol) {
-  console.log("---------------------------------------------------------------------");
+  repeat(70);
 
   if (player1 !== 100 && player2 !== 100) {
-    console.log(player1Name + " postion : " + player1 + "\t\t\t\t" + player2Name + " postion : " + player2 + "\n");
+    displayPlayersPostion(player1Name, player2Name, player1, player2);
 
-    const playerOne = playerPostion(player1, player1Symbol);
-    const playerTwo = playerPostion(player2, player2Symbol);
+    const playerOne = getPlayerPostion(player1, player1Symbol);
+    const playerTwo = getPlayerPostion(player2, player2Symbol);
 
     return forRollingDice(playerOne, playerTwo, player1Name, player2Name, player1Symbol, player2Symbol);
   }
 
   if (player1 === 100) {
-    return " 🥳🤩 " + player1Name + " YOU WON🏅🏆☺️";
+    return winMessage(player1Name);
   }
 
   if (player2 === 100) {
-    return " 🥳🤩" + player2Name + " YOU WON🏅🏆☺️";
+    return winMessage(player1Name);
   }
 }
 
