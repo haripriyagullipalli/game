@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>minesweeper</title>
+
+    <style>
+      body{
+        background-color: beige;
+      }
+
+      .parent{
+        background-color: antiquewhite;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="parent"></div>
+  </body>
+  <script>
+    const gridSize = 9;
+
+    const generateMinePos = () => {
+      const minePositions = new Set();
+      for (let i = 0; i <= 10; i++) {
+        minePositions.add(Math.floor(Math.random() * 80));
+      }
+
+      return minePositions;
+    };
+
+    const minePositions = generateMinePos();
+
+
+    const getnoOfMinesAround = (index) => {
+      let count = 0;
+
+      const allDirections = [
+        -1,
+        -gridSize - 1,
+        gridSize - 1,
+        gridSize,
+        -gridSize,
+        1,
+        -gridSize + 1,
+        gridSize + 1,
+      ];
+
+      // const allDirections = [-1, -10, 8, 9, -9, 1, -8, 10];
+
+      if (index % gridSize === 2) {
+        allDirections.splice(5);
+
+        console.log(allDirections, index);
+      }
+
+      if (index % gridSize === 0) {
+        allDirections.splice(0, 3);
+      }
+
+      console.log(allDirections);
+
+      allDirections.forEach((position) => {
+        const isMine = position + index;
+
+        if (isMine >= 0 && isMine <= 80) {
+          if (minePositions.has(isMine)) {
+            count++;
+          }
+        }
+      });
+
+      return count;
+    };
+
+    const parent = document.querySelector(".parent");
+    parent.style.height = "540px";
+    parent.style.width = "540px";
+    parent.style.display = "flex";
+    parent.style.flexWrap = "wrap";
+    parent.style.border = "1px solid black";
+    parent.style.margin = "200px auto";
+
+    for (let i = 0; i <= 80; i++) {
+      const div = document.createElement("div");
+      parent.appendChild(div);
+      div.classList.add(`b${i}`);
+      div.style.height = "60px";
+      div.style.boxSizing = "border-box";
+      div.style.width = "60px";
+      div.style.border = "1px solid black";
+      div.style.display = "flex";
+      div.style.justifyContent = "center";
+    }
+
+    const allcells = document.querySelector(".parent").children;
+
+    [...allcells].forEach((cell, index) => {
+      cell.addEventListener("click", () => {
+        if (minePositions.has(index)) {
+          cell.textContent = "💣";
+          return alert("game over");
+        } else {
+          const count = getnoOfMinesAround(index);
+          cell.textContent = count;
+        }
+      });
+    });
+  </script>
+</html>
