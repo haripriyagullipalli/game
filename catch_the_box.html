@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+    <style>
+      @keyframes move {
+        0% {
+          top: 0%;
+        }
+        50% {
+          top: 50%;
+        }
+        100% {
+          top: 95%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+    <script>
+      let score = 1;
+
+      const div = document.querySelector("div");
+      div.style.border = "1px solid black";
+      div.style.height = "500px";
+      div.style.width = "500px";
+      div.style.flex = "display";
+      div.style.position = "relative";
+
+      const basket = document.createElement("img");
+      basket.src =
+        "https://img.freepik.com/premium-vector/wicker-basket-vector-illustration_990010-945.jpg";
+      div.appendChild(basket);
+      basket.style.position = "absolute";
+      basket.style.left = "0px";
+      basket.style.bottom = "0px";
+      basket.style.height = "100px";
+      basket.style.width = "100px";
+      basket.style.backgroundColor = "red";
+
+      const fruit = document.createElement("div");
+      div.appendChild(fruit);
+      fruit.style.height = "30px";
+      fruit.style.width = "30px";
+      fruit.style.borderRadius = "50%";
+      fruit.style.backgroundColor = "red";
+      fruit.style.position = "absolute";
+      // fruit.style.transform = "translateY(10%)";
+      fruit.style.animation = "move 1s linear infinite";
+      fruit.style.transition = "top 3s linear";
+
+      document.addEventListener("keydown", (event) => {
+        // console.log(event.key);
+
+        const position = parseInt(basket.style.left);
+
+        if (event.key === "ArrowRight") {
+          basket.style.left = `${position + 50}px`;
+        }
+
+        if (event.key === "ArrowLeft") {
+          basket.style.left = `${position - 50}px`;
+        }
+      });
+
+      setInterval(() => {
+        let basketRect = basket.getBoundingClientRect();
+        let fruitRect = fruit.getBoundingClientRect();
+
+        console.log(basketRect, fruitRect);
+        if (fruitRect.top === basketRect.top) {
+          score += 1;
+          console.log(score);
+        }
+      }, 5000);
+    </script>
+  </body>
+</html>
